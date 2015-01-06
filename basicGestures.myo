@@ -1,0 +1,129 @@
+scriptId = 'hu.dzsubek.myo.basic_guesture'
+scriptTitle = "Basic Gestures"
+scriptDetailsUrl = ""
+switchLeftHand = false
+
+function onForegroundWindowChange(app, title)
+    -- An app for test
+    local isActive = title == 'Google'
+    return isActive;
+end
+
+onWaveInStart = function()
+    myo.debug('onWaveInStart');
+end
+
+onWaveInEnd = function()
+    myo.debug('onWaveInEnd');
+end
+
+onWaveOutStart = function()
+    myo.debug('onWaveOutStart');
+end
+
+onWaveOutEnd = function()
+    myo.debug('onWaveOutEnd');
+end
+
+onDoubleTapStart = function()
+    myo.debug('onDoubleTapStart');
+end
+
+onDoubleTapEnd = function()
+    myo.debug('onDoubleTapEnd');
+end
+
+onFistStart = function()
+    myo.debug('onFistStart');
+end
+
+onFistEnd = function()
+    myo.debug('onFistEnd');
+end
+
+onFingersSpreadStart = function()
+    myo.debug('onFingersSpreadStart');
+end
+
+onFingersSpreadEnd = function()
+    myo.debug('onFingersSpreadEnd');
+end
+
+onRestStart = function()
+    myo.debug('onRestStart');
+end
+
+onRestEnd = function()
+    myo.debug('onRestEnd');
+end
+
+function onWave(pose, edge)
+    if pose ~= "waveIn" and pose ~= "waveOut" then
+        return
+    end
+
+    if switchLeftHand then
+        pose = changeOnLeftHand(pose)
+    end
+
+    if pose == "waveIn" then
+        switchEdge(edge, onWaveInStart, onWaveInEnd)
+    end
+
+    if pose == "waveOut" then
+        switchEdge(edge, onWaveOutStart, onWaveOutEnd)
+    end
+
+end
+
+function onDoubleTap(pose, edge)
+    simpleGestures('doubleTap', pose, edge, onDoubleTapStart, onDoubleTapEnd)
+end
+
+function onFist(pose, edge)
+    simpleGestures('fist', pose, edge, onFistStart, onFistEnd)
+end
+
+function onFingersSpread(pose, edge)
+    simpleGestures('fingersSpread', pose, edge, onFingersSpreadStart, onFingersSpreadEnd)
+end
+
+function onRest(pose, edge)
+    simpleGestures('rest', pose, edge, onRestStart, onRestEnd)
+end
+
+function switchEdge(edge, onStart, onEnd)
+    if edge == "on" then
+        onStart()
+    else
+        onEnd()
+    end
+end
+
+function simpleGestures(gesture, pose, edge, onStart, onEnd)
+    if pose ~= gesture then
+        return
+    end
+
+    switchEdge(edge, onStart, onEnd)
+end
+
+function changeOnLeftHand(pose)
+    if myo.getArm() == "left" then
+        if pose == "waveIn" then
+            pose = "waveOut"
+        elseif pose == "waveOut" then
+            pose = "waveIn"
+        end
+    end
+
+    return pose
+end
+
+function onPoseEdge(pose, edge)
+    onWave(pose, edge)
+    onDoubleTap(pose, edge)
+    onFist(pose, edge)
+    onFingersSpread(pose, edge)
+    onRest(pose, edge)
+end
