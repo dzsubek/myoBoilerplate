@@ -26,13 +26,17 @@ Basic Gestures (basicGestures.myo)
 
 *You can switch onWaveIn and onWaveOut events when myo is on left arm with change `switchLeftHand`  from `false` to `true`.
 
-More
-----
-[MyoScript reference](https://developer.thalmic.com/docs/api_reference/platform/script-reference.html)
+Collaborate
+-----------
+Welcome!
 
 Plan
 ----
 1. Roll and Lift boilerplate
+
+More
+----
+[MyoScript reference](https://developer.thalmic.com/docs/api_reference/platform/script-reference.html)
  
 License
 -------
